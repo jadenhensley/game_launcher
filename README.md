@@ -1,7 +1,7 @@
 # Game Launcher
 
-<img src="https://github.com/jadenhensley/platformer/blob/main/screenshot0.png" width=600 height=300>
-<img src="https://github.com/jadenhensley/platformer/blob/main/screenshot1.png" width=600 height=300>
+<img src="https://github.com/jadenhensley/game_launcher/blob/main/screenshot0.png" width=600 height=300>
+<img src="https://github.com/jadenhensley/game_launcher/blob/main/screenshot1.png" width=600 height=300>
 
 
 # What is it?
