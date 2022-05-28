@@ -55,6 +55,7 @@ class GUIGameIcon():
         pygame.draw.rect(self.surface, self.color, self.rect, 5)
         c = pygame.mouse.get_pos()
         if self.rect.collidepoint(c[0],c[1]):
+            pygame.draw.rect(self.surface, (255,255,255), self.rect, 5)
             if MOUSEDOWN:
                 # pygame.draw.rect(self.surface, (255,0,0), self.rect)
                 if 'py' in self.executable:
