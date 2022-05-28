@@ -72,6 +72,23 @@ class GUIGameIcon():
                     install_game(self.text, href)
         printg(self.surface, self.text, self.rect.x, self.rect.y-30, self.color)
 
+class GUIScrollbar():
+    def __init__(self, surface, x, y):
+        self.rect = pygame.rect.Rect(x, y, sIcon, 50)
+        self.color = (20, 20, 20)
+        self.surface = surface
+        self.offset = pygame.math.Vector2(0,0)
+        self.LEFT = False
+        self.RIGHT = False
+    
+    def update(self):
+        pygame.draw.rect(self.surface, self.color, self.rect)
+        if self.LEFT and self.rect.x>0:
+            self.rect.x -= 10
+            self.offset.x += 10
+        if self.RIGHT and self.rect.right<pygame.display.get_window_size()[0]:
+            self.rect.x += 10
+            self.offset.x -= 10
 
 def printg(surface, text, x, y, color=(255,255,255)):
     text = monogram.render(text, True, color)
@@ -80,6 +97,7 @@ def printg(surface, text, x, y, color=(255,255,255)):
 fullscreen = False
 
 # delButton = GUIButton(screen, "delete games", sWidth - 200, sHeight - 200, delete_games)
+scrollbar = GUIScrollbar(screen, 100, sHeight - 50)
 
 def launcher():
     global MOUSEDOWN, screen, fullscreen, monogram, sIcon
@@ -99,6 +117,18 @@ def launcher():
             if key[pygame.K_a]:
                 print(pygame.display.get_window_size())
                 monogram = pygame.font.Font(f"monogram.ttf", pygame.display.get_window_size()[1]//20)
+            if key[pygame.K_LEFT]:
+                scrollbar.LEFT = True
+            if key[pygame.K_RIGHT]:
+                scrollbar.RIGHT = True
+            if key[pygame.K_q]:
+                pygame.quit()
+                sys.exit()
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_LEFT:
+                scrollbar.LEFT = False
+            if event.key == pygame.K_RIGHT:
+                scrollbar.RIGHT = False
         if event.type == pygame.MOUSEBUTTONDOWN:
             MOUSEDOWN = True
         if event.type == pygame.MOUSEBUTTONUP:
@@ -112,11 +142,11 @@ def launcher():
 
     for x, game in enumerate(game_data["games"]):
         try:
-            i = GUIGameIcon(screen, game_data["games"][game]["title"], game_data["games"][game]["icon"], 20+x*1*(sIcon+30), 100, game_data["games"][game]["executable"])
+            i = GUIGameIcon(screen, game_data["games"][game]["title"], game_data["games"][game]["icon"], 20+x*1*(sIcon+30) + scrollbar.offset.x, 100, game_data["games"][game]["executable"])
             i.update()
         except FileNotFoundError:
             href = game_data["games"][game]["repository"]
-            i = GUIGameIcon(screen, game, "notfound.png", 20+x*1*(sIcon+30), 100, f"install {href}")
+            i = GUIGameIcon(screen, game, "notfound.png", 20+x*1*(sIcon+30) + scrollbar.offset.x, 100, f"install {href}")
             i.update()
             printg(screen, "click icon to install game", 20, sHeight - 100)
 
@@ -126,6 +156,7 @@ def launcher():
     printg(screen, current_time, pygame.display.get_window_size()[0] // 2, 10)
     printg(screen, "Pygame Launcher / OS", 10, 10)
 
+    scrollbar.update()
     # delButton.update()
 
     pygame.display.update()
