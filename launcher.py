@@ -60,7 +60,7 @@ class GUIGameIcon():
                 # pygame.draw.rect(self.surface, (255,0,0), self.rect)
                 if 'py' in self.executable:
                     fullscreen = False
-                    run_game = subprocess.run(f"py {PROJECT_PATH}/{self.executable}", stdout=subprocess.PIPE, shell=True)
+                    run_game = subprocess.run(f"python {PROJECT_PATH}/{self.executable}", stdout=subprocess.PIPE, shell=True)
                     message = run_game.stdout.decode()
                     print(message)
                 if 'exe' in self.executable:
